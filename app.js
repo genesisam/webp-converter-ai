@@ -170,7 +170,7 @@
     entry.downloadBtn.disabled = false;
     // Show info update
     entry.card.querySelector('label').textContent = `Calidad usada: ${Math.round(quality * 100)}`;
-  }
+  
 
   convertAllBtn.addEventListener('click', async () => {
     convertAllBtn.disabled = true;
@@ -180,34 +180,24 @@
       }
     }
     convertAllBtn.disabled = false;
-  });
-
-  downloadAllBtn.addEventListener('click', () => {
-    downloadAllBtn.disabled = true;
-    let idx = 0;
-    function next() {
-      if (idx < fileEntries.length) {
-        const entry = fileEntries[idx++];
-        if (entry.convertedBlob) {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(entry.convertedBlob);
-          const ext = entry.file.name.split('.').slice(0, -1).join('.') || entry.file.name;
-          a.download = `${ext}.webp`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          // Wait briefly before next download to allow browsers to handle multiple downloads
-          setTimeout(next, 500);
-        } else {
-          // If not converted yet, convert first then download
-          convertEntry(entry).then(() => {
-            next();
-          });
-        }
-      } else {
-        downloadAllBtn.disabled = false;
-      }
+  downloadAllBtn.addEventListener('click', async () => {
+  downloadAllBtn.disabled = true;
+  const zip = new JSZip();
+  for (const entry of fileEntries) {
+    if (!entry.convertedBlob) {
+      await convertEntry(entry);
     }
-    next();
+    const ext = entry.file.name.split('.').slice(0, -1).join('.') || entry.file.name;
+    zip.file(`${ext}.webp`, entry.convertedBlob);
+  }
+  zip.generateAsync({ type: 'blob' }).then((content) => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(content);
+    a.download = 'converted_images.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    downloadAllBtn.disabled = false;
   });
+});;
 })();
