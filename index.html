@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>AI WebP Converter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #fdfdfd;
+      color: #333;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    #controls {
+      margin-bottom: 1rem;
+    }
+    #fileSelect {
+      padding: 8px 12px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #fileSelect:hover {
+      background: #45a047;
+    }
+    #drop-area {
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #777;
+    }
+    #drop-area.dragover {
+      border-color: #4caf50;
+      color: #4caf50;
+    }
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      width: 220px;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .card img {
+      max-width: 200px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .card label {
+      display: block;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    .card input[type="range"] {
+      width: 100%;
+    }
+    .card button {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .convert-btn {
+      background: #2196f3;
+      color: white;
+    }
+    .convert-btn:disabled {
+      background: #bbb;
+      cursor: default;
+    }
+    .download-btn {
+      background: #ff9800;
+      color: white;
+    }
+    #targetSize {
+      width: 70px;
+    }
+    #convertAll, #downloadAll {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      background: #3f51b5;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #downloadAll {
+      background: #9c27b0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Conversor a WebP con IA</h1>
+  <div id="controls">
+    <button id="fileSelect">Seleccionar imágenes</button>
+    <input type="file" id="fileElem" accept="image/*" multiple style="display:none">
+    <label for="targetSize">Objetivo de peso (KB):</label>
+    <input type="number" id="targetSize" placeholder="Ej. 150">
+  </div>
+  <div id="drop-area">
+    Arrastra y suelta imágenes aquí o usa el botón de arriba.
+  </div>
+  <div class="preview" id="preview"></div>
+  <button id="convertAll">Convertir todas</button>
+  <button id="downloadAll">Descargar todo</button>
+  <script src="app.js"></script>
+</body>
+</html>
